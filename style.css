@@ -1,0 +1,160 @@
+* {
+  padding: 0;
+  margin: 0;
+  border: 0;
+}
+
+*, *:before, *:after {
+  box-sizing: border-box;
+}
+
+:focus, :active {
+  outline: none;
+}
+
+a:focus, a:active {
+  outline: none;
+}
+
+nav, footer, header, aside {
+  display: block;
+}
+
+html, body {
+  height: 100%;
+  width: 100%;
+  font-size: 100%;
+  line-height: 1;
+  font-size: 14px;
+  -ms-text-size-adjust: 100%;
+  -moz-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+}
+
+input, button, textarea {
+  font-family: inherit;
+}
+
+input::-ms-clear {
+  display: none;
+}
+
+button {
+  cursor: pointer;
+}
+
+button::-moz-focus-inner {
+  padding: 0;
+  border: 0;
+}
+
+a, a:visited {
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+ul li {
+  list-style: none;
+}
+
+img {
+  vertical-align: top;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-size: inherit;
+  font-weight: 400;
+}
+/**************************/
+
+.container {
+  max-width: 1360px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 15px;
+}
+.main, .container {
+  min-height: 100%;
+}
+.products__content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  /* padding-bottom: 50px; */
+justify-content: space-between;
+align-items: center;
+}
+.products-wrapper {
+  display: flex;
+gap: 50px;
+  padding-top: 70px;
+ flex-wrap: wrap;
+ justify-content: center;
+}
+.products__item {
+  flex: 0 0 50%;
+  max-width: 450px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+.item__img img{
+  width: 100%;
+  aspect-ratio: 3/2;
+}
+.item__description {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  font-size: 20px;
+}
+.item__title {
+}
+.item__brand-category {
+  display: flex;
+  justify-content: space-between;
+
+}
+.item__brand-category div:last-child {
+  font-size: 15px;
+}
+.item__price-rating {
+  display: flex;
+  justify-content: space-between;
+}
+.item__price-rating div:last-child {
+  font-size: 15px;
+}
+.item__text {
+}
+
+
+.load-more {
+padding: 10px 50px;
+font-size: 40px;
+margin: 40px 0;
+
+}
+
+.preloader {
+position: fixed;
+top: 0;
+left: 0;
+bottom: 0;
+right: 0;
+display: flex;
+justify-content: center;
+align-items: center;
+background: rgba(0,0,0,0.5);
+color: white;
+font-size: 60px;
+font-family: Arial, Helvetica, sans-serif;
+font-weight: 700;
+}
+.preloader.off {
+  opacity: 0;
+  visibility: hidden;
+}

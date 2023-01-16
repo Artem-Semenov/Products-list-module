@@ -39,6 +39,7 @@ class Item {
                 <div class="item__text">
                   ${this.description}
                 </div>
+                
               </div>
             </div>
             `;
@@ -61,7 +62,7 @@ class Item {
         this.DOM();
       });
 
-    return this.html;
+    return this;
   };
 
   Get = async () => {

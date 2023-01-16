@@ -1,10 +1,9 @@
+import Item from "/modules/Item.js";
 import ItemList from "/modules/ItemList.js";
 // import Item from '/modules/Item.js'
 
 class ShopApp {
-  constructor() {
-    console.log("created");
-  }
+  constructor() {}
   callbackFn;
   DB_NAME = "shopIDB";
   DB_VERSION = 1;
@@ -15,22 +14,20 @@ class ShopApp {
   InitApp = async () => {
     let result = null;
     this.itemList = new ItemList("items-wrapper");
-    await this.openIndexedDB(() => console.log("IDB ready to work"));
-
+    await this.openIndexedDB(this.checkIDBforProducts);
     await this.addEventListeners();
-
-    console.log("finish initing");
+    this.itemList.Init();
   };
 
-  addEventListeners = async () => {
+  addEventListeners = () => {
     this.loadMore.addEventListener("click", (e) => {
-      if (this.itemList.productsList.length >= 20) {
+      console.log(this.itemList.renderedProducstAmount);
+      if (this.itemList.renderedProducstAmount >= 30) {
         alert("Finish!");
       } else {
-        this.itemList.renderProducts();
+        this.itemList.loadMore();
       }
     });
-    console.log("started");
   };
 
   openIndexedDB = async (callBackFn) => {
@@ -52,47 +49,67 @@ class ShopApp {
     };
 
     this.request.onsuccess = async (e) => {
-      this.db = await e.target.result;
+      this.db = e.target.result;
       console.log("on success: ", e);
-      // await this.checkforProducts();
+      // this.checkIDBforProducts();
 
-      this.callBackFn();
-      return 1;
+      await this.callBackFn();
     };
   };
 
-  checkforProducts = async () => {
+  checkIDBforProducts = async () => {
     this.transaction = this.db.transaction("products");
     this.objectStore = this.transaction.objectStore("products");
-    this.getRequest = this.objectStore.getAll();
+    this.getRequest = await this.objectStore.getAll();
     this.getRequest.onerror = (e) => {
       console.log(e);
     };
     this.getRequest.onsuccess = async () => {
       if (this.getRequest.result.length < 1) {
         console.log(
-          "товаров в базе нет - запрашиваем товары из базы и добавляем в IndexedDB"
+          "товаров в indexedDB нет - запрашиваем товары из базы и добавляем в IndexedDB"
         );
-        await fetch("https://dummyjson.com/products?skip=0&limit=20")
+
+     /*    await fetch("https://dummyjson.com/products")
           .then((data) => data.json())
           .then((data) => {
             this.transaction = this.db.transaction("products", "readwrite");
             this.objectStore = this.transaction.objectStore("products");
             data.products.forEach((el) => {
+              this.itemList.addEl(el);
               this.addRequest = this.objectStore.add(el);
             });
+          }); */
+          
+          await fetch("https://dummyjson.com/products")
+          .then((data) => data.json())
+          .then((data) => {
+            data.products.forEach((el) => {
+              this.itemList.addEl(el);
+            });
           });
-        console.log(
-          "товары в IndexedDB - инициализируем обертку для товаров, рендерим первые 2 товара и выключаем прелоадер"
-        );
+        console.log(this.itemList.productsList); 
 
-        await itemList.renderProducts();
+        console.log(
+          "товары в IndexedDB - рендерим первые 2 товара и выключаем прелоадер"
+        );
+        // console.log(this.itemList.productsList);
+
+        // await this.itemList.renderProducts();
+        ////////////////
 
         this.preloader.classList.add("off");
       } else {
-        console.log("товары в базе есть -");
+        console.log(`товары в IndexedDB есть - 
+        добавляем их в контейнер -
+        выключаем прелоадер, переходим к рендеру`);
 
-        await this.itemList.renderProducts();
+        this.getRequest.result.forEach(async (el) => {
+          let item = new Item(el);
+          await item.DOM();
+          this.itemList.productsList.push(item);
+        });
+
         this.preloader.classList.add("off");
       }
     };
@@ -101,8 +118,7 @@ class ShopApp {
 
 const shop = new ShopApp();
 
-shop.InitApp().then((result) => {
-  shop.itemList.productsList[0];
-});
+shop.InitApp();
+console.log(shop);
 
-// export default ShopApp
+//  export default shop

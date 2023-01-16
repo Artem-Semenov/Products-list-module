@@ -1,16 +1,39 @@
-import ItemList from '/modules/ItemList.js'
-import itemList from '/modules/index.js'
-
-const preloader = document.querySelector(".preloader");
+import ItemList from "/modules/ItemList.js";
+// import Item from '/modules/Item.js'
 
 class ShopApp {
-  constructor() {}
+  constructor() {
+    console.log("created");
+  }
   callbackFn;
   DB_NAME = "shopIDB";
   DB_VERSION = 1;
   loadMore = document.getElementById("load-more");
+  preloader = document.querySelector(".preloader");
+  itemList;
 
-   openIndexedDB = async (callBackFn) => {
+  InitApp = async () => {
+    let result = null;
+    this.itemList = new ItemList("items-wrapper");
+    await this.openIndexedDB(() => console.log("IDB ready to work"));
+
+    await this.addEventListeners();
+
+    console.log("finish initing");
+  };
+
+  addEventListeners = async () => {
+    this.loadMore.addEventListener("click", (e) => {
+      if (this.itemList.productsList.length >= 20) {
+        alert("Finish!");
+      } else {
+        this.itemList.renderProducts();
+      }
+    });
+    console.log("started");
+  };
+
+  openIndexedDB = async (callBackFn) => {
     this.callBackFn = callBackFn;
     this.request = indexedDB.open(this.DB_NAME, this.DB_VERSION);
 
@@ -29,15 +52,16 @@ class ShopApp {
     };
 
     this.request.onsuccess = async (e) => {
-      this.db = e.target.result;
+      this.db = await e.target.result;
       console.log("on success: ", e);
-    await  this.checkforProducts();
- 
+      // await this.checkforProducts();
+
       this.callBackFn();
+      return 1;
     };
   };
 
-  checkforProducts = () => {
+  checkforProducts = async () => {
     this.transaction = this.db.transaction("products");
     this.objectStore = this.transaction.objectStore("products");
     this.getRequest = this.objectStore.getAll();
@@ -64,28 +88,21 @@ class ShopApp {
 
         await itemList.renderProducts();
 
-        preloader.classList.add("off");
+        this.preloader.classList.add("off");
       } else {
         console.log("товары в базе есть -");
 
-        await itemList.renderProducts();
-        preloader.classList.add("off");
+        await this.itemList.renderProducts();
+        this.preloader.classList.add("off");
       }
     };
-  }
+  };
 }
 
+const shop = new ShopApp();
 
+shop.InitApp().then((result) => {
+  shop.itemList.productsList[0];
+});
 
-
-
-
-
-
-
-
-
-
-
-export default ShopApp
-
+// export default ShopApp

@@ -18,7 +18,7 @@ class ItemList {
       this.transaction =  this.db.transaction("products");
       this.objectStore = this.transaction.objectStore("products");
       this.getRequest = this.objectStore.openCursor(IDBKeyRange.bound(
-        this.productsList.length, this.productsList.length + 2, true, false));
+      this.productsList.length, this.productsList.length + 2, true, false));
       this.getRequest.onerror = () => {
         console.log("error:", e);
       };

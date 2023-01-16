@@ -80,7 +80,7 @@ class Item {
       this.getRequest.onsuccess = () => {
         this.result = this.getRequest.result;
         console.log(this.result);
-        return this.result;
+        // return this.result;
       };
     };
   };

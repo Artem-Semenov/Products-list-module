@@ -14,10 +14,25 @@ class Item {
   DB_NAME = "shopIDB";
   DB_VERSION = 1;
   result = null;
-  DOM = async () => {
-    // let element = document.createElement('div')
+
+  Get = async () => {
+    return fetch(`https://dummyjson.com/products/${this.id}`)
+      .then((data) => data.json())
+      .then((data) => data)
+      .catch((error) => console.log(error));
+  };
+
+  DOM = async (data) => {
+    this.title = data.title;
+    this.brand = data.brand;
+    this.category = data.category;
+    this.id = data.id;
+    this.image = data.images[0];
+    this.description = data.description;
+    this.price = data.price;
+    this.rating = data.rating;
+    let element = document.createElement("div");
     let html = `
-    <div class="products__item" id='${this.id}'>
               <div class="item__img">
                 <img
                   src="${this.image}"
@@ -39,51 +54,48 @@ class Item {
                 <div class="item__text">
                   ${this.description}
                 </div>
-                
               </div>
-            </div>
             `;
-
-    this.html = html;
+    element.innerHTML = html;
+    element.classList.add("products__item");
+    element.setAttribute("id", this.id);
+    this.element = element;
+    return this.element;
   };
 
-  Reload = async () => {
-    await fetch(`https://dummyjson.com/products/${this.id}`)
-      .then((data) => data.json())
-      .then((data) => {
-        this.title = data.title;
-        this.brand = data.brand;
-        this.category = data.category;
-        this.id = data.id;
-        this.image = data.images[0];
-        this.description = data.description;
-        this.price = data.price;
-        this.rating = data.rating;
-        this.DOM();
-      });
-
-    return this;
-  };
-
-  Get = async () => {
+  Create = async () => {
     this.request = indexedDB.open(this.DB_NAME, this.DB_VERSION);
     this.request.onerror = (e) => {
       console.log("error:", e);
     };
     this.request.onsuccess = (e) => {
       this.db = e.target.result;
-      this.transaction = this.db.transaction("products");
+      this.transaction = this.db.transaction("products", "readwrite");
       this.objectStore = this.transaction.objectStore("products");
-      this.getRequest = this.objectStore.get(this.id);
-      this.getRequest.onerror = (e) => {
+      let item = {};
+      item.title = this.title;
+      item.brand = this.brand;
+      item.category = this.category;
+      item.id = this.id;
+      item.image = this.image;
+      item.description = this.description;
+      item.price = this.price;
+      item.rating = this.rating;
+      this.putRequest = this.objectStore.put(item);
+      this.putRequest.onerror = (e) => {
         console.log("error:", e);
       };
-      this.getRequest.onsuccess = () => {
-        this.result = this.getRequest.result;
-        console.log(this.result);
-        // return this.result;
+      this.putRequest.onsuccess = () => {
+        console.log("item succesfully added to IDB");
       };
     };
+  };
+
+  Reload = async () => {
+    let data = await this.Get();
+    await this.DOM(data);
+    this.Create();
+    return this;
   };
 }
 

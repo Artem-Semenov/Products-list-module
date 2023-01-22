@@ -7,7 +7,8 @@ class ShopApp {
   callbackFn;
   DB_NAME = "shopIDB";
   DB_VERSION = 1;
-  loadMore = document.getElementById("load-more");
+  next = document.getElementById("prev-btn");
+  prev = document.getElementById("next-btn");
   preloader = document.querySelector(".preloader");
   itemList;
 
@@ -15,19 +16,12 @@ class ShopApp {
     let result = null;
     this.itemList = new ItemList("items-wrapper");
     await this.openIndexedDB(this.checkIDBforProducts);
-    await this.addEventListeners();
-    this.itemList.Init();
+    this.addEventListeners();
   };
 
   addEventListeners = () => {
-    this.loadMore.addEventListener("click", (e) => {
-      console.log(this.itemList.renderedProducstAmount);
-      if (this.itemList.renderedProducstAmount >= 30) {
-        alert("Finish!");
-      } else {
-        this.itemList.loadMore();
-      }
-    });
+    this.prev.addEventListener("click", this.itemList.Prev);
+    this.next.addEventListener("click", this.itemList.Next);
   };
 
   openIndexedDB = async (callBackFn) => {
@@ -50,7 +44,7 @@ class ShopApp {
 
     this.request.onsuccess = async (e) => {
       this.db = e.target.result;
-      console.log("on success: ", e);
+      // console.log("on success: ", e);
       // this.checkIDBforProducts();
 
       await this.callBackFn();
@@ -60,7 +54,7 @@ class ShopApp {
   checkIDBforProducts = async () => {
     this.transaction = this.db.transaction("products");
     this.objectStore = this.transaction.objectStore("products");
-    this.getRequest = await this.objectStore.getAll();
+    this.getRequest = this.objectStore.getAll();
     this.getRequest.onerror = (e) => {
       console.log(e);
     };
@@ -69,46 +63,20 @@ class ShopApp {
         console.log(
           "товаров в indexedDB нет - запрашиваем товары из базы и добавляем в IndexedDB"
         );
+        this.itemList.Init();
 
-     /*    await fetch("https://dummyjson.com/products")
-          .then((data) => data.json())
-          .then((data) => {
-            this.transaction = this.db.transaction("products", "readwrite");
-            this.objectStore = this.transaction.objectStore("products");
-            data.products.forEach((el) => {
-              this.itemList.addEl(el);
-              this.addRequest = this.objectStore.add(el);
-            });
-          }); */
-          
-          await fetch("https://dummyjson.com/products")
-          .then((data) => data.json())
-          .then((data) => {
-            data.products.forEach((el) => {
-              this.itemList.addEl(el);
-            });
-          });
-        console.log(this.itemList.productsList); 
+        console.log(this.itemList.productsList);
 
         console.log(
           "товары в IndexedDB - рендерим первые 2 товара и выключаем прелоадер"
         );
-        // console.log(this.itemList.productsList);
-
-        // await this.itemList.renderProducts();
-        ////////////////
 
         this.preloader.classList.add("off");
       } else {
-        console.log(`товары в IndexedDB есть - 
-        добавляем их в контейнер -
-        выключаем прелоадер, переходим к рендеру`);
-
-        this.getRequest.result.forEach(async (el) => {
-          let item = new Item(el);
-          await item.DOM();
-          this.itemList.productsList.push(item);
-        });
+        // console.log(`товары в IndexedDB есть -
+        // добавляем их в контейнер -
+        // выключаем прелоадер, переходим к рендеру`);
+        this.itemList.Init();
 
         this.preloader.classList.add("off");
       }
@@ -119,6 +87,6 @@ class ShopApp {
 const shop = new ShopApp();
 
 shop.InitApp();
-console.log(shop);
+// console.log(shop);
 
 //  export default shop

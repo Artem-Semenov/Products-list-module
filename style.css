@@ -76,14 +76,16 @@ h1, h2, h3, h4, h5, h6 {
   margin-right: auto;
   padding: 0 15px;
 }
-.main, .container {
-  min-height: 100%;
+.main, .container, .products__content {
+  min-height: 100vh;
 }
 .products__content {
+  position: relative;
+
   display: flex;
   flex-direction: column;
   height: 100%;
-  /* padding-bottom: 50px; */
+
 justify-content: space-between;
 align-items: center;
 }
@@ -128,17 +130,19 @@ gap: 50px;
 .item__price-rating div:last-child {
   font-size: 15px;
 }
-.item__text {
+
+
+
+.next-btn, .prev-btn {
+position: absolute;
+top: 50%;
 }
-
-
-.load-more {
-padding: 10px 50px;
-font-size: 40px;
-margin: 40px 0;
-
+.next-btn{
+right: 10px;
 }
-
+.prev-btn {
+  left: -10px;
+}
 .preloader {
 position: fixed;
 top: 0;

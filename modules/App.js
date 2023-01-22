@@ -7,21 +7,22 @@ class ShopApp {
   callbackFn;
   DB_NAME = "shopIDB";
   DB_VERSION = 1;
-  next = document.getElementById("prev-btn");
-  prev = document.getElementById("next-btn");
+
   preloader = document.querySelector(".preloader");
   itemList;
 
   InitApp = async () => {
     let result = null;
     this.itemList = new ItemList("items-wrapper");
+    this.itemList.next = document.getElementById("next-btn");
+    this.itemList.prev = document.getElementById("prev-btn");
     await this.openIndexedDB(this.checkIDBforProducts);
     this.addEventListeners();
   };
 
   addEventListeners = () => {
-    this.prev.addEventListener("click", this.itemList.Prev);
-    this.next.addEventListener("click", this.itemList.Next);
+    this.itemList.prev.addEventListener("click", this.itemList.Prev);
+    this.itemList.next.addEventListener("click", this.itemList.Next);
   };
 
   openIndexedDB = async (callBackFn) => {

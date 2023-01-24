@@ -1,5 +1,5 @@
-class Item {
-  constructor(data) {}
+export class Item {
+  constructor() {}
   DB_NAME = "shopIDB";
   DB_VERSION = 1;
 
@@ -10,12 +10,12 @@ class Item {
       .catch((error) => console.log(error));
   };
 
-  DOM = async (data) => {
+  DOM = async (data = this) => {
     this.title = data.title;
     this.brand = data.brand;
     this.category = data.category;
     this.id = data.id;
-    this.image = data.images[0];
+    this.image = data.image || data.images[0];
     this.description = data.description;
     this.price = data.price;
     this.rating = data.rating;
@@ -23,6 +23,7 @@ class Item {
     let html = `
               <div class="item__img">
                 <img
+                loading="lazy"
                   src="${this.image}"
                   alt="${this.title}"
                   width = '450'
@@ -44,10 +45,12 @@ class Item {
                 </div>
               </div>
             `;
-    // element.innerHTML = html;
-    this.html = html;
+    element.innerHTML = html;
     element.classList.add("products__item");
     element.setAttribute("id", this.id);
+    element.addEventListener('click', () => {
+      console.log(`clicked on product ${this.id}`);
+    })
     this.element = element;
     return this.element;
   };
@@ -88,4 +91,3 @@ class Item {
   };
 }
 
-export default Item;

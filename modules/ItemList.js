@@ -1,6 +1,6 @@
-import Item from "/modules/Item.js";
+import {Item} from "/modules/Item.js";
 
-class ItemList {
+export  class ItemList {
   constructor(id) {
     this.element = document.getElementById(id);
   }
@@ -15,7 +15,6 @@ class ItemList {
     await fetch("https://dummyjson.com/products?limit=30&skip=0")
       .then((data) => data.json())
       .then(async (data) => {
-        console.log(data);
         for (let product of data.products) {
           await this.addEl(product);
         }
@@ -24,7 +23,7 @@ class ItemList {
     this.productsList.slice(0, this.pageSize).forEach((el) => {
       this.renderedProducts.push(el);
       // console.log(this.renderedProducts);
-      el.element.innerHTML = el.html;
+
       this.element.append(el.element);
     });
   };
@@ -32,6 +31,7 @@ class ItemList {
   addEl = async (data) => {
     let item = new Item();
     await item.DOM(data);
+    item.Create();
     this.productsList.push(item);
   };
 
@@ -39,7 +39,17 @@ class ItemList {
     document.getElementById(id)?.remove();
   };
   ReloadEl = async (id) => {
-    document.getElementById(id)?.Reload();
+   await this.productsList[id - 1].Reload();
+
+   //immitation of property change
+   this.productsList[id - 1].price += 100;
+   //getting new DOM
+   await this.productsList[id - 1].DOM();
+
+   //replacing
+   this.element.replaceChild(this.productsList[id - 1].element,
+    document.getElementById(id))
+
   };
 
   Next = async () => {
@@ -66,7 +76,6 @@ class ItemList {
       this.preloader.classList.remove("off");
       await product.Reload();
       this.renderedProducts.push(product);
-      product.element.innerHTML = product.html;
       this.element.append(product.element);
       this.preloader.classList.add("off");
     }
@@ -101,7 +110,6 @@ class ItemList {
       this.preloader.classList.remove("off");
       await product.Reload();
       this.renderedProducts.push(product);
-      product.element.innerHTML = product.html;
       this.element.append(product.element);
       this.preloader.classList.add("off");
     }
@@ -116,4 +124,4 @@ class ItemList {
   };
 }
 
-export default ItemList;
+

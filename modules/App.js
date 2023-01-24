@@ -1,8 +1,8 @@
-import ItemList from "/modules/ItemList.js";
+import { ItemList } from "/modules/ItemList.js";
 
 class ShopApp {
   constructor() {}
-  callbackFn;
+  callBackFn;
   DB_NAME = "shopIDB";
   DB_VERSION = 1;
   preloader = document.querySelector(".preloader");
@@ -12,7 +12,7 @@ class ShopApp {
     this.itemList = new ItemList("items-wrapper");
     this.itemList.next = document.getElementById("next-btn");
     this.itemList.prev = document.getElementById("prev-btn");
-    await this.openIndexedDB(this.checkIDBforProducts);
+    this.openIndexedDB(this.checkIDBforProducts);
     this.addEventListeners();
   };
 
@@ -60,21 +60,19 @@ class ShopApp {
         console.log(
           "товаров в indexedDB нет - запрашиваем товары из базы и добавляем в IndexedDB"
         );
-        this.itemList.Init();
-
-        console.log(this.itemList.productsList);
-
+       await this.itemList.Init(2);
         console.log(
           "товары в IndexedDB - рендерим первые 2 товара и выключаем прелоадер"
         );
 
         this.preloader.classList.add("off");
       } else {
-        // console.log(`товары в IndexedDB есть -
-        // добавляем их в контейнер -
-        // выключаем прелоадер, переходим к рендеру`);
-        this.itemList.Init(2);
-
+        console.log(
+          `товары уже есть в IndexedDB - 
+обновляем информацию о них,
+рендерим первые 2 товара и выключаем прелоадер`
+        );
+        await this.itemList.Init(2);
         this.preloader.classList.add("off");
       }
     };
@@ -84,3 +82,7 @@ class ShopApp {
 const shop = new ShopApp();
 
 shop.InitApp();
+
+console.log(shop);
+
+ 

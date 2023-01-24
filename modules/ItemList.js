@@ -1,5 +1,5 @@
 // import {Item} from "/modules/Item.js";
-import { Item } from "https://github.com/Artem-Semenov/Products-list-module/blob/master/modules/Item.js";
+import { Item } from "https://artem-semenov.github.io/Products-list-module/modules/Item.js";
 
 export class ItemList {
   constructor(id) {

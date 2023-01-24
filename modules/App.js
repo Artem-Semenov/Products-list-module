@@ -1,5 +1,5 @@
 // import { ItemList } from "/modules/ItemList.js";
-import { ItemList } from "https://github.com/Artem-Semenov/Products-list-module/blob/master/modules/ItemList.js";
+import { ItemList } from "https://artem-semenov.github.io/Products-list-module/modules/ItemList.js";
 
 
 class ShopApp {

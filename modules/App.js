@@ -1,4 +1,6 @@
-import { ItemList } from "/modules/ItemList.js";
+// import { ItemList } from "/modules/ItemList.js";
+import { ItemList } from "https://github.com/Artem-Semenov/Products-list-module/blob/master/modules/ItemList.js";
+
 
 class ShopApp {
   constructor() {}
@@ -85,4 +87,3 @@ shop.InitApp();
 
 console.log(shop);
 
- 

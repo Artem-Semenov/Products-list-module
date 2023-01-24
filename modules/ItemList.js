@@ -1,6 +1,7 @@
-import {Item} from "/modules/Item.js";
+// import {Item} from "/modules/Item.js";
+import { Item } from "https://github.com/Artem-Semenov/Products-list-module/blob/master/modules/Item.js";
 
-export  class ItemList {
+export class ItemList {
   constructor(id) {
     this.element = document.getElementById(id);
   }
@@ -39,17 +40,19 @@ export  class ItemList {
     document.getElementById(id)?.remove();
   };
   ReloadEl = async (id) => {
-   await this.productsList[id - 1].Reload();
+    await this.productsList[id - 1].Reload();
 
-   //immitation of property change
-   this.productsList[id - 1].price += 100;
-   //getting new DOM
-   await this.productsList[id - 1].DOM();
+    //immitation of property change
+    this.productsList[id - 1].price += 100;
 
-   //replacing
-   this.element.replaceChild(this.productsList[id - 1].element,
-    document.getElementById(id))
+    //getting new DOM
+    await this.productsList[id - 1].DOM();
 
+    //replacing
+    this.element.replaceChild(
+      this.productsList[id - 1].element,
+      document.getElementById(id)
+    );
   };
 
   Next = async () => {
@@ -123,5 +126,3 @@ export  class ItemList {
     // console.log(this.renderedProducts);
   };
 }
-
-

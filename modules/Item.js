@@ -15,7 +15,7 @@ export class Item {
     this.brand = data.brand;
     this.category = data.category;
     this.id = data.id;
-    this.image = data.image || data.images[0];
+    this.image = data.images !== undefined ? data.images[0] : data.image;
     this.description = data.description;
     this.price = data.price;
     this.rating = data.rating;

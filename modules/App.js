@@ -1,18 +1,14 @@
-import Item from "/modules/Item.js";
 import ItemList from "/modules/ItemList.js";
-// import Item from '/modules/Item.js'
 
 class ShopApp {
   constructor() {}
   callbackFn;
   DB_NAME = "shopIDB";
   DB_VERSION = 1;
-
   preloader = document.querySelector(".preloader");
   itemList;
 
   InitApp = async () => {
-    let result = null;
     this.itemList = new ItemList("items-wrapper");
     this.itemList.next = document.getElementById("next-btn");
     this.itemList.prev = document.getElementById("prev-btn");
@@ -77,7 +73,7 @@ class ShopApp {
         // console.log(`товары в IndexedDB есть -
         // добавляем их в контейнер -
         // выключаем прелоадер, переходим к рендеру`);
-        this.itemList.Init();
+        this.itemList.Init(2);
 
         this.preloader.classList.add("off");
       }
@@ -88,6 +84,3 @@ class ShopApp {
 const shop = new ShopApp();
 
 shop.InitApp();
-// console.log(shop);
-
-//  export default shop

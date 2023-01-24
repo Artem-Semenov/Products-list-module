@@ -1,19 +1,7 @@
 class Item {
-  constructor(data) {
-    // console.log(data);
-    this.title = data.title;
-    this.brand = data.brand;
-    this.category = data.category;
-    this.id = data.id;
-    this.image = data.images[0];
-    this.description = data.description;
-    this.price = data.price;
-    this.rating = data.rating;
-  }
-  html;
+  constructor(data) {}
   DB_NAME = "shopIDB";
   DB_VERSION = 1;
-  result = null;
 
   Get = async () => {
     return fetch(`https://dummyjson.com/products/${this.id}`)
@@ -56,7 +44,8 @@ class Item {
                 </div>
               </div>
             `;
-    element.innerHTML = html;
+    // element.innerHTML = html;
+    this.html = html;
     element.classList.add("products__item");
     element.setAttribute("id", this.id);
     this.element = element;
@@ -86,7 +75,7 @@ class Item {
         console.log("error:", e);
       };
       this.putRequest.onsuccess = () => {
-        console.log("item succesfully added to IDB");
+        // console.log("item succesfully added to IDB");
       };
     };
   };

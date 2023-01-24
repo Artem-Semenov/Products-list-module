@@ -131,11 +131,12 @@ gap: 50px;
   font-size: 15px;
 }
 
-
-
 .next-btn, .prev-btn {
 position: absolute;
 top: 50%;
+}
+.next-btn:disabled, .prev-btn:disabled {
+  cursor: auto;
 }
 .next-btn{
 right: 10px;

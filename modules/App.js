@@ -1,7 +1,6 @@
 // import { ItemList } from "/modules/ItemList.js";
 import { ItemList } from "https://artem-semenov.github.io/Products-list-module/modules/ItemList.js";
 
-
 class ShopApp {
   constructor() {}
   callBackFn;
@@ -62,7 +61,7 @@ class ShopApp {
         console.log(
           "товаров в indexedDB нет - запрашиваем товары из базы и добавляем в IndexedDB"
         );
-       await this.itemList.Init(2);
+        await this.itemList.Init(2);
         console.log(
           "товары в IndexedDB - рендерим первые 2 товара и выключаем прелоадер"
         );
@@ -87,3 +86,57 @@ shop.InitApp();
 
 console.log(shop);
 
+function askNotificationPermission() {
+ /*  console.log("work");
+  if (Notification?.permission === "granted") {
+    console.log("test");
+    // If the user agreed to get notified
+    // Let's try to send ten notifications
+    let i = 0;
+    // Using an interval cause some browsers (including Firefox) are blocking notifications if there are too much in a certain time.
+    const interval = setInterval(() => {
+      // Thanks to the tag, we should only see the "Hi! 9" notification
+      const n = new Notification(`Hi! ${i}`, { tag: "soManyNotification" });
+      if (i === 9) {
+        clearInterval(interval);
+      }
+      i++;
+    }, 200);
+  } else if (Notification && Notification.permission !== "denied") {
+    // If the user hasn't told if they want to be notified or not
+    // Note: because of Chrome, we are not sure the permission property
+    // is set, therefore it's unsafe to check for the "default" value.
+    Notification.requestPermission((status) => {
+      // If the user said okay
+      if (status === "granted") {
+        let i = 0;
+        // Using an interval cause some browsers (including Firefox) are blocking notifications if there are too much in a certain time.
+        const interval = setInterval(() => {
+          // Thanks to the tag, we should only see the "Hi! 9" notification
+          const n = new Notification(`Hi! ${i}`, { tag: "soManyNotification" });
+          if (i === 9) {
+            clearInterval(interval);
+          }
+          i++;
+        }, 200);
+      } else {
+        // Otherwise, we can fallback to a regular modal alert
+        alert("Hi!");
+      }
+    });
+  } else {
+    // If the user refuses to get notified, we can fallback to a regular modal alert
+    alert("Hi!");
+  } */
+  Notification.requestPermission().then((result) => {
+    console.log(result);
+  });
+}
+
+let btn = document.getElementById("notification");
+
+btn.addEventListener("click", askNotificationPermission);
+
+const img = 'https://static.vecteezy.com/system/resources/previews/006/086/198/original/notification-icon-for-web-vector.jpg';
+const text = `HEY! Your task "Upload media" is now overdue.`;
+const notification = new Notification('To do list', { body: text, icon: img });

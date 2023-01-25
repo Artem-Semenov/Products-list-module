@@ -70,13 +70,17 @@ h1, h2, h3, h4, h5, h6 {
 }
 /**************************/
 
+header {
+  padding-top: 30px;
+  text-align: center;
+}
 .container {
   max-width: 1360px;
   margin-left: auto;
   margin-right: auto;
   padding: 0 15px;
 }
-.main, .container, .products__content {
+.main, .main .container, .products__content {
   min-height: 100vh;
 }
 .products__content {

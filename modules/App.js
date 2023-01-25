@@ -87,7 +87,7 @@ shop.InitApp();
 console.log(shop);
 
 function askNotificationPermission() {
- /*  console.log("work");
+  /*  console.log("work");
   if (Notification?.permission === "granted") {
     console.log("test");
     // If the user agreed to get notified
@@ -137,6 +137,12 @@ let btn = document.getElementById("notification");
 
 btn.addEventListener("click", askNotificationPermission);
 
-const img = 'https://static.vecteezy.com/system/resources/previews/006/086/198/original/notification-icon-for-web-vector.jpg';
+const img =
+  "https://static.vecteezy.com/system/resources/previews/006/086/198/original/notification-icon-for-web-vector.jpg";
 const text = `HEY! Your task "Upload media" is now overdue.`;
-const notification = new Notification('To do list', { body: text, icon: img });
+setTimeout(() => {
+  const notification = new Notification("To do list", {
+    body: text,
+    icon: img,
+  });
+}, 5000);

@@ -93,12 +93,14 @@ function askNotificationPermission() {
     }
   });
 }
-/* 
+
 let btn = document.getElementById("notification");
 
-btn.addEventListener("click", askNotificationPermission); */
+btn.addEventListener("click", askNotificationPermission);
 
-addEventListener("DOMContentLoaded", askNotificationPermission);
+addEventListener("DOMContentLoaded", () => {
+  worker.port.postMessage({ name: "notification" });
+});
 
 let worker = new SharedWorker(
   "https://artem-semenov.github.io/Products-list-module/modules/Worker.js"

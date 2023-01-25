@@ -100,5 +100,7 @@ btn.addEventListener("click", askNotificationPermission); */
 
 addEventListener("DOMContentLoaded", askNotificationPermission);
 
-let worker = new SharedWorker("/modules/Worker.js");
+let worker = new SharedWorker(
+  "https://artem-semenov.github.io/Products-list-module/modules/Worker.js"
+);
 worker.port.start();

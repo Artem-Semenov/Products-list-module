@@ -85,6 +85,14 @@ shop.InitApp();
 
 console.log(shop);
 
+
+////////////////////////////////////////
+
+let worker = new SharedWorker(
+  "https://artem-semenov.github.io/Products-list-module/modules/Worker.js"
+);
+worker.port.start();
+
 function askNotificationPermission() {
   Notification.requestPermission(function (permission) {
     // If the user accepts, let's create a notification
@@ -94,15 +102,13 @@ function askNotificationPermission() {
   });
 }
 
+addEventListener("DOMContentLoaded", askNotificationPermission);
+
 let btn = document.getElementById("notification");
 
 btn.addEventListener("click", () => {
   worker.port.postMessage({ name: "notification" });
 }); 
 
-addEventListener("DOMContentLoaded", askNotificationPermission);
 
-let worker = new SharedWorker(
-  "https://artem-semenov.github.io/Products-list-module/modules/Worker.js"
-);
-worker.port.start();
+
